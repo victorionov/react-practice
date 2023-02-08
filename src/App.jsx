@@ -18,23 +18,27 @@ const preparedProducts = productsFromServer.map((product) => {
   });
 });
 
-// const products = productsFromServer.map((product) => {
-//   const category = null; // find by product.categoryId
-//   const user = null; // find by category.ownerId
-
-//   return null;
-// });
-
 export const App = () => {
   const [selectedUser, setSelectedUser] = useState('All');
+  const [filterQuery, setFilterQuery] = useState('');
 
-  const filteredProducts
-    = selectedUser === 'All'
+  const filterProducts = () => {
+    const filteredByUser = selectedUser === 'All'
       ? preparedProducts
       : preparedProducts
         .filter(product => product.user.name === selectedUser);
 
-  // const handler
+    const filteredByQuery = filteredByUser.filter((product) => {
+      const filterQueryToLowerCase = filterQuery.toLowerCase().trim();
+      const productToLowerCase = product.name.toLowerCase();
+
+      return productToLowerCase.includes(filterQueryToLowerCase);
+    });
+
+    return filteredByQuery;
+  };
+
+  const filteredProducts = filterProducts();
 
   return (
     <div className="section">
@@ -71,7 +75,8 @@ export const App = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  value={filterQuery}
+                  onChange={elem => setFilterQuery(elem.target.value)}
                 />
 
                 <span className="icon is-left">
