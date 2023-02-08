@@ -90,7 +90,9 @@ export const App = () => {
                   <button
                     data-cy="ClearButton"
                     type="button"
-                    className="delete"
+                    className={classNames({
+                      delete: filterQuery !== '',
+                    })}
                   />
                 </span>
               </p>
